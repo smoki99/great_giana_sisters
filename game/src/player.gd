@@ -15,7 +15,9 @@ const TURN_SPEED := 12.0
 var sm := PlayerStateMachine.new()
 var _jump_held := false
 var _heading := 0.0
+var cam_spring := CameraSpring.new()
 @onready var _camera_boom: Node3D = get_node_or_null(camera_boom_path)
+@onready var _arm: SpringArm3D = get_node_or_null(NodePath("%s/Arm" % camera_boom_path))
 @onready var _body: MeshInstance3D = get_node_or_null(^"Body")
 
 
@@ -23,6 +25,7 @@ func respawn(at: Vector3) -> void:
 	global_position = at
 	velocity = Vector3.ZERO
 	sm.reset(true)
+	cam_spring.reset(6.0)
 
 
 func _physics_process(delta: float) -> void:
@@ -61,6 +64,9 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= PlayerStateMachine.GRAVITY * delta
 	move_and_slide()
+	if _arm:
+		var goal := 6.0 + current_speed() * 0.12 + (0.6 if not is_on_floor() else 0.0)
+		_arm.spring_length = cam_spring.step(goal, delta)
 
 	var hs := Vector2(velocity.x, velocity.z)
 	if hs.length() > 0.2:
