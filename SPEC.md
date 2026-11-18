@@ -10,11 +10,11 @@ User story: *As a browser player, I open `index.html`, press Enter, and within s
 
 ## Tech Stack
 
-- **Godot 4.5.x stable** (Linux headless) + Web export templates; GDScript only; no C#, no addons.
-- **Blender 4.5.16 LTS** headless (`-b -P`) for all model/animation/preview generation; assets ship as `.glb`.
-- **Bun ≥ 1.4** for tooling TS scripts (download/extract/export-zip/preview server).
-- **npm deps (tools/ only): `xz-decompress`, `tar-stream`, `fflate`** — no others.
-- MCP servers registered in `.omp/mcp.json`: `godot-mcp` (`@coding-solo/godot-mcp`) + `blender-mcp` (`@glutamateapp/blender-mcp-ts`). They mirror the scripted paths; CI/acceptance never depends on them.
+- **Godot 4.6-stable** (Linux headless, `~/.local/bin/godot` wrapper bakes `LD_LIBRARY_PATH`) + Web export templates; GDScript only; no C#, no addons.
+- **Blender 4.5.16 LTS** headless (`-b -P`, `~/.local/bin/blender` wrapper) for all model/animation/preview generation; assets ship as `.glb`.
+- **Bun ≥ 1.4** for tooling TS scripts (extract/export-zip/preview server).
+- **npm deps (repo root node_modules): `fflate`, plus MCP server packages only** — no others.
+- MCP: `godot-mcp` (`@coding-solo/godot-mcp`) registered via `scripts/mcp-line-framing.ts` (it speaks JSON-lines). `blender-mcp` stays **disabled** (addon refuses headless); scripted `blender -b -P` is the canonical asset path. Acceptance never depends on MCP.
 - Browser target: desktop Chrome/Firefox (WASM, threads preferred, `web_nothreads` fallback).
 
 ## Commands
