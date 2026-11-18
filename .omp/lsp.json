@@ -1,0 +1,11 @@
+{
+	"servers": {
+		"gdscript": {
+			"command": "/usr/local/bin/bun",
+			"args": ["/workspace/great_giana_sisters/scripts/godot-lsp-bridge.ts"],
+			"rootMarkers": ["game/project.godot"],
+			"fileTypes": [".gd"],
+			"env": {}
+		}
+	}
+}

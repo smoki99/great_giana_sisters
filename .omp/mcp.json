@@ -1,0 +1,20 @@
+{
+	"servers": [
+		{
+			"name": "godot",
+			"command": "/usr/local/bin/bun",
+			"args": ["/workspace/great_giana_sisters/scripts/mcp-line-framing.ts", "/usr/local/bin/bun", "/workspace/great_giana_sisters/node_modules/@coding-solo/godot-mcp/build/index.js"],
+			"env": {
+				"GODOT_PATH": "/home/omp/.local/opt/godot/Godot_v4.6-stable_linux.x86_64",
+				"LD_LIBRARY_PATH": "/home/omp/.local/lib/blender"
+			}
+		},
+		{
+			"name": "blender",
+			"type": "sse",
+			"url": "http://127.0.0.1:7451/sse",
+			"enabled": false,
+			"_comment": "addon refuses headless; would need Xvfb+llvmpipe. Use 'blender -b --python script.py' asset pipeline instead (verified working)."
+		}
+	]
+}
