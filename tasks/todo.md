@@ -1,12 +1,12 @@
-# TODO — Giana-like Sisters 3D
+# TODO — Mia in Candy Land
 
 Mirror of `tasks/plan.md`. Check off only when the task's verification passed.
 
 ## Phase 0 — Repo foundation
-- [ ] T1 Web export preset + package.json scripts
-- [ ] T2 serve-web.ts / zip-web.ts / ci.ts skeleton
-- [ ] T3 check-gd.ts static check
-- [ ] Checkpoint 0: ci import+export+zip green; page loads in Chromium
+- [X] T1 Web export preset + package.json scripts
+- [X] T2 serve-web.ts / zip-web.ts / ci.ts skeleton
+- [X] T3 check-gd.ts static check
+- [X] Checkpoint 0: ci import+export+zip green; page loads in Chromium (canvas+SAB ok; E2E needs browser flag `--enable-unsafe-swiftshader`)
 
 ## Phase 1 — Asset pipeline (parallel after T4)
 - [ ] T4 build_assets.py framework (+determinism check)
@@ -19,8 +19,8 @@ Mirror of `tasks/plan.md`. Check off only when the task's verification passed.
 - [ ] Checkpoint 1: 19 glb >5KB, godot --import clean
 
 ## Phase 2 — Player & camera (grey boxes, parallel to Phase 1)
-- [ ] T11 input map, autoloads, main.tscn boot
-- [ ] T12 player state machine + movement (tests first)
+- [X] T11 input map, autoloads, main.tscn boot
+- [X] T12 player state machine + movement (11 unit checks green + browser proof)
 - [ ] T13 spring-arm camera (+math test)
 - [ ] T14 animation driver
 - [ ] T15 character select Mia/Lina

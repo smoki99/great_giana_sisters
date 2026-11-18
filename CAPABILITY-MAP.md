@@ -39,4 +39,4 @@ Build order: toolchain → assets → game → web-deploy
 ## Naming
 
 - Playable sisters: **Mia** (green top, blonde — Giana-archetype) and **Lina** (pink top, brunette — Rosi-archetype), same rig, material swap.
-- Game title in build: "Giana-like Sisters 3D" demo placeholder (rename freely).
+- Game title in build: **"Mia in Candy Land"** (user decision 2026-11-18).

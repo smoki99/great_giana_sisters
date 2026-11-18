@@ -1,7 +1,16 @@
 {
-  "name": "giana3d-tools",
+  "name": "mia-in-candy-land-tools",
   "private": true,
   "type": "module",
+  "scripts": {
+    "import": "$HOME/.local/bin/godot --headless --path game --import",
+    "check": "bun scripts/check-gd.ts",
+    "unit": "$HOME/.local/bin/godot --headless --path game -s res://tests/run_tests.gd",
+    "export": "$HOME/.local/bin/godot --headless --path game --export-release Web ../build/web/index.html",
+    "zip": "bun scripts/zip-web.ts",
+    "serve": "bun scripts/serve-web.ts build/web 8060",
+    "ci": "bun scripts/ci.ts"
+  },
   "dependencies": {
     "@ast-grep/cli": "^0.51.3",
     "@coding-solo/godot-mcp": "^0.1.1",

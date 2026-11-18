@@ -20,7 +20,7 @@
 | Blender 4.5.16 headless | `~/.local/bin/blender` wrapper (bakes `LD_LIBRARY_PATH=…/opt/blender/{lib,usd}:~/.local/lib/blender`). Harness PATH lacks `~/.local/bin` → use the absolute path. `blender -b --python x.py` incl. gltf export verified |
 | blender MCP addon | installed at `~/.config/blender/4.5/scripts/addons/blender_mcp_addon.py`, but **refuses headless**; needs Xvfb+llvmpipe. Asset pipeline = plain `blender -b --python` scripts |
 | ast-grep | `bunx ast-grep` (repo `node_modules/@ast-grep/cli`) — .gd parses via tree-sitter-gdscript? (NO: use for TS only; GDScript edits = plain edit tool) |
-| Browser | omp `browser` device (headless Chromium) works; E2E = serve `export/` via `bun serve` + drive page |
+| Browser | omp `browser` device (headless Chromium) works; E2E = serve `build/web` (`bun run serve`) + drive page. Headless GL = swiftshader: page warns (harmless); add launch flag `--enable-unsafe-swiftshader` via `app.args` when strict. JS eval quirk: `log()` swallows — `return` values from cells |
 | Extract | no system xz/unzip/tar-xz: `scripts/unpack.ts` (`tarxz` strips nothing by default, `--strip` removes top dir; `zip --exec`) + `scripts/extract-tpz.ts` (streaming, substring filter) |
 | GitHub | `https://github.com/smoki99/great_giana_sisters` public; token in `.env` (split PART vars — tool layer truncates `ghp_*` literals; assemble with `awk -F= '/PART/{printf "%s",$2}' .env`). **github.com git transport works** despite old AGENTS note; creds in `~/.git-credentials` (`x-access-token@github.com`) |
 
