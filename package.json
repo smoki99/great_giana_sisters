@@ -1,0 +1,15 @@
+{
+  "name": "giana3d-tools",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@ast-grep/cli": "^0.51.3",
+    "@coding-solo/godot-mcp": "^0.1.1",
+    "@glutamateapp/blender-mcp-ts": "^0.10.0",
+    "fflate": "^0.8.3",
+    "tar-stream": "^3.2.2",
+    "typescript": "^7.0.2",
+    "typescript-language-server": "^6.1.0",
+    "xz-decompress": "^0.2.3"
+  }
+}

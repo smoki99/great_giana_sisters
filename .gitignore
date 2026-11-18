@@ -1,0 +1,16 @@
+# secrets
+.env
+
+# node
+node_modules/
+
+# godot
+game/.godot/
+*.tmp
+
+# build outputs
+export/
+*.glb.tmp
+
+# blender
+*.blend1
