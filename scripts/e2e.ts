@@ -157,38 +157,35 @@ const consoleErrors: string[] = [];
 
 	// 6. --full alpha choreography via the title bridge
 	if (FULL) {
-		// first gem is 2 cells (8 m) east at x=8; walk with interleaved hops (gems float)
-		// camera sits at a 3/4 angle: D alone pulls north-east; D+S cancels to due east
-		for (let i = 0; i < 7; i++) {
+		// first gem is 2 cells (8 m) east at x=8, same row as the spawn; the camera boom is
+		// fixed (yaw 0) so D = due east, A = due west — no diagonal compensation needed.
+		// swiftshader software rendering runs the sim at ~10 fps, so ~1 m/s wall-clock:
+		// budget 12 x 2 s holds to cover the 8 m plus renderer slack.
+		for (let i = 0; i < 12; i++) {
 			await key("KeyD", 68, true);
-			await key("KeyS", 83, true);
-			await sleep(2200);
+			await sleep(2000);
 			await key("KeyD", 68, false);
-			await key("KeyS", 83, false);
 			await tap("Space", 32);
-			await sleep(600);
+			await sleep(500);
 			console.log(`INFO gem-step ${i}: ${await title()}`);
+			if (/G[1-9]/.test(String(await title()))) break;
 		}
 		await sleep(700);
 		let tg = String(await title());
-		// camera drift may steer us past the gem band (x~8, z~4-8): S/A zig-zag rescue sweep
-		for (let i = 0; i < 10 && !/G[1-9]/.test(tg); i++) {
-			await hold("KeyS", 83, 2200);
+		// if the east-walk overshot the gem: walk back west along the spawn row, hopping —
+		// the gem at x=8 sits exactly on that line, so this sweep cannot miss it
+		for (let i = 0; i < 6 && !/G[1-9]/.test(tg); i++) {
+			await hold("KeyA", 65, 2000);
 			await tap("Space", 32);
-			await hold("KeyA", 65, 2200);
-			await sleep(500);
+			await sleep(400);
 			tg = String(await title());
 		}
 		check("gem pickup (G>=1 in title)", /G[1-9]/.test(tg), tg);
-		// deterministic self-kill: camera diagonals make W+A = due west; walking past x<0
-		// drops into the void along the whole west edge (works from any east-drift position)
+		// deterministic self-kill: A = due west (fixed camera); walking past x<0 drops into
+		// the void along the whole west edge regardless of where the gem phase left us
 		let lives2 = false;
-		for (let i = 0; i < 8 && !lives2; i++) {
-			await key("KeyW", 87, true);
-			await key("KeyA", 65, true);
-			await sleep(2500);
-			await key("KeyW", 87, false);
-			await key("KeyA", 65, false);
+		for (let i = 0; i < 10 && !lives2; i++) {
+			await hold("KeyA", 65, 2500);
 			await sleep(400);
 			lives2 = /L2/.test(String(await title()));
 		}

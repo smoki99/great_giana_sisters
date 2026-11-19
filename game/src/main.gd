@@ -17,9 +17,10 @@ var _last_title := ""
 func _ready() -> void:
 	for a in OS.get_cmdline_user_args():
 		if a.begins_with("e2e"):
-			# swiftshader renders ~1 fps; let physics catch up so browser tests
-			# get real-time-ish simulation (still fixed-step, just more steps/frame)
-			Engine.max_physics_steps_per_frame = 8
+			# swiftshader renders ~1 fps; let physics catch up to real time so browser tests
+			# see deterministic distances (still fixed 1/60 steps, just up to a full second
+			# of them per frame; 5 m/s * 1/60 = 0.08 m/step, no tunneling risk)
+			Engine.max_physics_steps_per_frame = 60
 	GameState.reset_run()
 	_refresh_title()
 	_title.show()

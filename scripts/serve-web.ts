@@ -21,6 +21,12 @@ const server = serve({
 		const f = file(`${dir}${path}`);
 		if (!(await f.exists())) return new Response("not found", { status: 404 });
 		const ext = path.slice(path.lastIndexOf("."));
+		// the engine only sees args baked into GODOT_CONFIG; forward ?e2e=1 to the wasm
+		// (main.gd raises Engine.max_physics_steps_per_frame for these runs)
+		if (path === "/index.html" && url.searchParams.has("e2e")) {
+			const html = (await f.text()).replace('"args":[]', '"args":["--","e2e"]');
+			return new Response(html, { headers: { "content-type": "text/html", "cross-origin-opener-policy": "same-origin", "cross-origin-embedder-policy": "require-corp", "cross-origin-resource-policy": "same-origin", "cache-control": "no-store" } });
+		}
 		return new Response(f, {
 			headers: {
 				"content-type": MIME[ext] ?? "application/octet-stream",
