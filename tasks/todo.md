@@ -1,52 +1,36 @@
-# TODO — Mia in Candy Land
+# TODO — v0.3 Candy 64 look & feel
 
-Mirror of `tasks/plan.md`. Check off only when the task's verification passed.
+Mirror of `tasks/plan.md` (v0.3). Check off only when the task's verification passed. Prior v0.1 M0–M5 checklist: complete + shipped as v0.1.0-alpha (see git history of this file).
 
-## Phase 0 — Repo foundation
-- [X] T1 Web export preset + package.json scripts
-- [X] T2 serve-web.ts / zip-web.ts / ci.ts skeleton
-- [X] T3 check-gd.ts static check
-- [X] Checkpoint 0: ci import+export+zip green; page loads in Chromium (canvas+SAB ok; E2E needs browser flag `--enable-unsafe-swiftshader`)
+## Phase A — Measurement (steps 1–2)
+- [x] S1a cdp.ts TabKit + e2e refactor (e2e --full 11/11)
+- [x] S1a main.gd __game_stats bridge + ?e2e=1/?slowmo=1 launch args
+- [x] S1a shotgallery.ts 8-state condition-driven driver — one all-green run 2026-11-19 (0 errors, states 01–08 canonical, frames visually verified: 03 stride, 04 airborne, 06 LIVES 2)
+- [x] S1a palette_lint.py + shots.ts lint gates
+- [x] S1b red baselines recorded (sat 0.256 FAIL, contrast 0.285 PASS, fog 0.022 PASS, dc 1527–1832 FAIL)
+- [ ] S2 commit toolchain + spec + baselines (gate: ci + e2e --full green)
 
-## Phase 1 — Asset pipeline (parallel after T4)
-- [x] T4 build_assets.py framework (+determinism check)
-- [x] T5 Mia rig + 5 anims; Lina reskin
-- [x] T6 terrain tiles, platforms, brick/question block, spring, flag, gate
-- [x] T7 gem + diamond
-- [x] T8 walker + hopper
-- [x] T9 tree, cloud, bush (+variants)
-- [x] T10 preview contact sheet — **human visual gate**
-- [x] Checkpoint 1: 19 glb >5KB, godot --import clean
+**Checkpoint A** when S2 lands: gates red on color/perf while toolchain green.
 
-## Phase 2 — Player & camera (grey boxes, parallel to Phase 1)
-- [X] T11 input map, autoloads, main.tscn boot
-- [X] T12 player state machine + movement (11 unit checks green + browser proof)
-- [x] T13 spring-arm camera (+math test)
-- [x] T14 animation driver
-- [x] T15 character select Mia/Lina
-- [x] Checkpoint 2: blockout playable, unit+boot green
+## Phase B — beta1 World (steps 3–5)
+- [ ] S3 world v1 merged ArrayMesh + bevels + refs-extracted palette — accept: dc ≤ 800, sat ≥ 0.30 trend
+- [ ] S4 toon material (half-lambert + rim + vertex-color) + sky-colored height haze — accept: no grey band, renders swiftshader
+- [ ] S5 gradient sky + sun tint + clouds; relight; tag v0.3.0-beta1 + push + zip
 
-## Phase 3 — Level & game loop
-- [x] T16 Sugarwood Glade tile level + kill-plane
-- [x] T17 gems + HUD counter
-- [x] T18 200s timer (test)
-- [x] T19 lives + respawn + game over (test)
-- [x] T20 checkpoint flag
-- [x] T21 diamond power-up 10s (test)
-- [x] T22 enemy placement + stomp/hit
-- [x] T23 spring pads
-- [x] T24 goal gate + win overlay
-- [x] Checkpoint 3: full loop playable, all tests green
+## Phase C — beta2 Camera + character (steps 6–8)
+- [ ] S6 camera_spring v2: follow-lag, speed FOV, lookahead, jump-lead, wall push-in + unit tests
+- [ ] S7 character v2: chunky model, blink/eye-track, pigtail spring (+tests)
+- [ ] S8 tag v0.3.0-beta2 + zip + push
 
-## Phase 4 — Presentation & audio
-- [x] T25 lighting/sky/fog/scenery pass
-- [x] T26 SFX synth
-- [x] T27 music loop (20 s, M toggle)
-- [x] T28 HUD art, title screen, controls overlay
+## Phase D — beta3 Juice (steps 9–11)
+- [ ] S9 squash&stretch + landing dust + jump puffs
+- [ ] S10 gem magnet/pop-punch/sparkle + HUD tween
+- [ ] S11 tag v0.3.0-beta3 + zip + push
 
-## Phase 5 — Ship
-- [x] T29 ci.ts full pipeline (fail-fast, CI OK in 81 s)
-- [x] T30 E2E browser smoke (raw CDP: 11 checks, shots, fps, title bridge)
-- [x] T31 perf + zip-size pass (10.6 MB zip, swiftshader ~1.5 fps software)
-- [x] T32 README, alpha zip 0.1.0, tag v0.1.0-alpha, pushed to origin
-- [x] Final: SPEC success criteria 1-6 verified (loop+alpha x2, 0 errors, one-shot CI, 10.6 MB, original assets, 109 checks)
+## Phase E — beta4 Feel + audio (steps 12–14)
+- [ ] S12 run_rules: coyote/buffer/air-control/momentum + hit-stop/shake/blink + enemy squash
+- [ ] S13 pitch-ladder pickups, damage stinger, low-time pressure, land thud
+- [ ] S14 tag v0.3.0-beta4 — palette lint HARD GREEN (sat ≥ 0.35)
+
+## Phase F — beta5 Ship (step 15)
+- [ ] S15 2× stability, lint stage in ci.ts, README/CHANGELOG, zip, tag v0.3.0-beta5, push

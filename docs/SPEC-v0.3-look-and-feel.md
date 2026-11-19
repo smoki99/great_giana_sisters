@@ -24,7 +24,7 @@ Players say Mia in Candy Land "doesn't look good" yet. Target: a Mario-64-grade 
 
 Reframed success criteria (measurable):
 - Palette lint: mean screenshot saturation ≥ 0.35, value contrast between playfield and sky ≥ 0.25 luminance delta; no fog wall (horizon band ΔL to sky < 0.12). (Today: grey box world fails all three.)
-- Draw calls in L3 ≤ 260 (767 static boxes today — measured baseline at step 1) and swiftshader e2e fps ≥ current baseline (1.19 s/title tick).
+- Draw calls in L3 ≤ 260 (measured grey-box baseline 2026-11-19: **~1530** draw calls via the stats bridge, not the 767 static boxes the gen-list implies — merged-mesh work must cross the gap) and swiftshader e2e fps ≥ current baseline (1.19 s/title tick).
 - Camera: heading→boom yaw 90% settle within 0.5–1.2 s on scripted route (unit, pure math); zero rigid-attach frames in recorded trace.
 - Feel: coyote 0.12 s, input buffer 0.15 s, jump preserves horizontal velocity exactly (e2e asserts X-velocity continuity across the jump frame).
 - e2e 11/11 green after every step; stability 2× back-to-back before each beta tag.
@@ -72,11 +72,19 @@ static func follow_step(cur: Vector3, target: Vector3, dt: float, k: float) -> V
 3. NEW visual QA gates (step 1): 8-state gallery → PIL lint (palette bands, contrast, fog wall) + engine stats dump (draw calls/fps) in CI.
 4. Per-beta: 2× consecutive `e2e --full` green + public-URL pass where tunnel live.
 
+## Visual QA toolchain (step 1, built 2026-11-19)
+
+- `scripts/cdp.ts` — shared CDP TabKit (launchChrome/openTab/waitBoot/key/tap/hold/shot/title/clickCanvas) used by both `e2e.ts` and `shotgallery.ts`.
+- `main.gd` bridges: `window.__game_stats` = {dc, fps, prims} each stats tick; title label = state bridge (`play G_ T_ L_ X_ Z_`). Launch args via URL query (Godot web maps `?key=val` → user args): `?e2e=1` = physics catch-up cap 60 steps/frame (real-time e2e); `?slowmo=1` = cap 1 step/frame (gallery headroom).
+- `scripts/shotgallery.ts` — 8 canonical states → `build/shots/gallery/*.png` + `stats.json`. Choreography is **condition-driven**, never fixed holds: swiftshader renders 1–2 fps under screenshot load while the sim tracks real time, so one paused screenshot walks the player ~5 m (a 1.2 s scripted "run" ended in the X39 gap). Every phase advances by micro-steps (≤2 s key pulses, hop-cycles to clear terrain) re-reading the title bridge between steps; shots fire when the state regex hits.
+- `scripts/palette_lint.py` (PIL/numpy): mean saturation ≥ 0.35, playfield↔sky contrast ≥ 0.25, fog-wall horizon ΔL < 0.12. `scripts/shots.ts lint` = palette gates + dc ≤ 260 over stats.json; exit code = gate.
+- Measured red baseline (grey-box gallery run 2026-11-19, all states green, 0 errors — proves the gates bite): saturation mean 0.256 FAIL (min 0.238), contrast 0.285 PASS, fog-wall ΔL 0.022 PASS, dc 1527–1832 FAIL (budget 260), capture fps 1–2.
+
 ## The 15 steps × 5 betas
 
 | # | Step | Beta |
 |---|---|---|
-| 1 | visual-qa: shotgallery.ts (8 states) + lint (PIL palette/contrast/fog) + perf baseline recorded | — |
+| 1 | visual-qa: shotgallery.ts (8 states) + lint (PIL palette/contrast/fog) + perf baseline recorded; shared `cdp.ts` kit + `slowmo` launch arg | — |
 | 2 | SPEC committed; lint gates red on current build (proves measurement) | — |
 | 3 | World v1: per-tile-type merged ArrayMesh + bevels + vertex-color palette (PIL-extracted from refs) | b1 |
 | 4 | Toon material: half-lambert ramp + rim + vertex-color modulate shader; fog → sky-colored height haze | b1 |
@@ -91,6 +99,8 @@ static func follow_step(cur: Vector3, target: Vector3, dt: float, k: float) -> V
 | 13 | Audio-juice: pickup pitch ladder, damage stinger, low-time pressure, land thud | b4 |
 | 14 | **tag v0.3.0-beta4 (feel + audio)**; gallery re-render, palette lint must go green | b4 |
 | 15 | Stability 2× + perf budget in CI + README/CHANGELOG + zip + **tag v0.3.0-beta5** + push gitea | b5 |
+
+Progress (2026-11-19): steps 1–2 = toolchain complete & lint red on current build (baselines above); remaining before commit: one gallery run with all 8 states choreography-green.
 
 ## Boundaries
 

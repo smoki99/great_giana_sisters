@@ -13,7 +13,7 @@ var _player: CharacterBody3D
 var _epoch := 0            # invalidates pending respawn timers across restarts
 var _dying := false
 var _last_title := ""
-
+var _stats_acc := 0.0
 func _ready() -> void:
 	for a in OS.get_cmdline_user_args():
 		if a.begins_with("e2e"):
@@ -21,6 +21,11 @@ func _ready() -> void:
 			# see deterministic distances (still fixed 1/60 steps, just up to a full second
 			# of them per frame; 5 m/s * 1/60 = 0.08 m/step, no tunneling risk)
 			Engine.max_physics_steps_per_frame = 60
+		elif a.begins_with("slowmo"):
+			# gallery captures: sim runs ~real time, so one screenshot pause walks the
+			# player ~10 m — cap physics at 1 step/frame (~0.37x wall) so key holds and
+			# snapshot latency stay in the sub-metre range
+			Engine.max_physics_steps_per_frame = 1
 	GameState.reset_run()
 	_refresh_title()
 	_title.show()
@@ -63,6 +68,14 @@ func _process(delta: float) -> void:
 	if st != _last_title:
 		_last_title = st
 		DisplayServer.window_set_title("Mia in Candy Land - %s" % st)
+	# Visual-QA bridge (web): draw calls + fps for scripts/shotgallery.ts perf budget
+	if OS.has_feature("web"):
+		_stats_acc += delta
+		if _stats_acc > 0.25:
+			_stats_acc = 0.0
+			var ri := RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_DRAW_CALLS_IN_FRAME)
+			JavaScriptBridge.eval("window.__game_stats=%s" % JSON.stringify(
+				{"dc": ri, "fps": Engine.get_frames_per_second(), "prims": RenderingServer.get_rendering_info(RenderingServer.RENDERING_INFO_TOTAL_PRIMITIVES_IN_FRAME)}))
 
 
 func _unhandled_input(event: InputEvent) -> void:
