@@ -63,16 +63,19 @@ func die() -> void:
 	sm.kill()
 	velocity = Vector3.ZERO
 	died.emit()
+	GameState.fx("death")
 
 
 func launch_from_spring() -> void:
 	sm.state = PlayerStateMachine.State.AIRBORNE
+	GameState.fx("spring")
 
 
 func stomp_bounce() -> void:
 	velocity.y = 7.5
 	sm.state = PlayerStateMachine.State.AIRBORNE
 	sm.double_used = false
+	GameState.fx("stomp")
 
 
 func start_power(seconds: float) -> void:
@@ -114,10 +117,12 @@ func _physics_process(delta: float) -> void:
 		PlayerStateMachine.Action.JUMP:
 			velocity.y = PlayerStateMachine.JUMP_VELOCITY
 			jumped.emit()
+			GameState.fx("jump")
 		PlayerStateMachine.Action.DOUBLE:
 			velocity.y = PlayerStateMachine.DOUBLE_VELOCITY
 			_double_fx = AnimDriver.DOUBLE_FLASH
 			double_jumped.emit()
+			GameState.fx("double")
 
 	if not is_on_floor():
 		velocity.y -= PlayerStateMachine.GRAVITY * delta

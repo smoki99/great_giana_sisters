@@ -3,10 +3,11 @@ extends Node
 ## timer, game over and win overlays (T16/T20/T24). Character select (T15)
 ## persists via GameState and survives respawns/level reloads.
 
-const TITLE_TXT := "MIA IN CANDY LAND\n\npress ENTER to start\n\n1 = Mia   2 = Lina  (current: %s)\n\nWASD / arrows move - SPACE jump & double-jump"
+const TITLE_TXT := "MIA IN CANDY LAND\n\npress ENTER to start\n\n1 = Mia   2 = Lina  (current: %s)\n\nWASD/arrows move - SPACE jump & double-jump\nENTER start - M music on/off"
 const PLAYER_PATH := "World/Level/Player"
 
 @onready var _title: Label = $UI/Title
+var _dim: ColorRect
 var _hud: Label
 var _player: CharacterBody3D
 var _epoch := 0            # invalidates pending respawn timers across restarts
@@ -16,6 +17,16 @@ func _ready() -> void:
 	GameState.reset_run()
 	_refresh_title()
 	_title.show()
+	_dim = ColorRect.new()
+	_dim.color = Color(0.08, 0.05, 0.2, 0.4)
+	_dim.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_dim.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	$UI.add_child(_dim)
+	$UI.move_child(_dim, 0)
+	_title.add_theme_font_size_override("font_size", 28)
+	_title.add_theme_color_override("font_color", Color(1.0, 0.82, 0.4))
+	_title.add_theme_color_override("font_outline_color", Color(0.35, 0.15, 0.45))
+	_title.add_theme_constant_override("outline_size", 10)
 	_hud = Label.new()
 	_hud.position = Vector2(16, 10)
 	_hud.add_theme_font_size_override("font_size", 22)
@@ -46,6 +57,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			return
 		GameState.playing = true
 		_title.hide()
+		_dim.hide()
+		GameState.fx("select")
 		get_viewport().set_input_as_handled()
 	elif not GameState.playing and event is InputEventKey and event.pressed and not event.echo:
 		match event.keycode:
@@ -70,15 +83,21 @@ func _on_died() -> void:
 
 
 func _on_gate_reached() -> void:
+	GameState.fx("win")
 	_end_run("YOU WIN!\n\ngems %d - time left %d\npress ENTER for title" % [GameState.gems, ceili(GameState.time_left)])
+
+
+func _show_overlay(msg: String) -> void:
+	_title.text = msg
+	_title.show()
+	_dim.show()
 
 
 func _end_run(msg: String) -> void:
 	_epoch += 1
 	_dying = false
 	GameState.playing = false
-	_title.text = msg
-	_title.show()
+	_show_overlay(msg)
 
 
 func _pick_character(id: String) -> void:

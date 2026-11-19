@@ -23,7 +23,9 @@ func _on_body_entered(body: Node3D) -> void:
 		return
 	if kind == 0:
 		GameState.gems += 1
+		GameState.fx("gem")
 	else:
 		body.start_power(RunRules.POWERUP_SECONDS)
 		GameState.powerup_active = true
+		GameState.fx("power")
 	queue_free()

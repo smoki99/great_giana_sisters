@@ -24,6 +24,7 @@ func _on_body_entered(body: Node3D) -> void:
 	if _model:
 		for m in _model.find_children("*", "MeshInstance3D", true, false):
 			m.set_surface_override_material(0, _active_material())
+	GameState.fx("checkpoint")
 
 
 static var _mat: StandardMaterial3D

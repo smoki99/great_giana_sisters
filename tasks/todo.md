@@ -39,10 +39,10 @@ Mirror of `tasks/plan.md`. Check off only when the task's verification passed.
 - [x] Checkpoint 3: full loop playable, all tests green
 
 ## Phase 4 — Presentation & audio
-- [ ] T25 lighting/sky/fog/scenery pass
-- [ ] T26 SFX synth
-- [ ] T27 music loop (if approved)
-- [ ] T28 HUD art, title screen, controls overlay
+- [x] T25 lighting/sky/fog/scenery pass
+- [x] T26 SFX synth
+- [x] T27 music loop (20 s, M toggle)
+- [x] T28 HUD art, title screen, controls overlay
 
 ## Phase 5 — Ship
 - [ ] T29 ci.ts full pipeline

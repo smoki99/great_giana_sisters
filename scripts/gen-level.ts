@@ -120,6 +120,10 @@ tonemap_white = 1.35
 ambient_light_source = 2
 ambient_light_color = Color(0.85, 0.88, 1, 1)
 ambient_light_energy = 0.35
+fog_enabled = true
+fog_light_color = Color(0.82, 0.95, 0.92, 1)
+fog_density = 0.0055
+fog_sky_affect = 0.35
 
 [sub_resource type="BoxShape3D" id="grass_shape"]
 size = Vector3(4, 1.29, 4)
@@ -151,6 +155,7 @@ environment = SubResource("env")
 [node name="Sun" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 12, 0)
 shadow_enabled = true
+directional_shadow_max_distance = 80.0
 
 [node name="Terrain" type="StaticBody3D" parent="."]
 

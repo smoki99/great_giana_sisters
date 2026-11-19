@@ -52,8 +52,11 @@ func _on_body_entered(body: Node3D) -> void:
 	if stomp or GameState.powerup_active:
 		_die()
 		if stomp:
-			body.stomp_bounce()
+			body.stomp_bounce()  # plays the stomp blip
+		else:
+			GameState.fx("stomp")
 	else:
+		GameState.fx("hurt")
 		body.die()
 
 

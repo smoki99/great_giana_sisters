@@ -13,6 +13,9 @@ static var powerup_active := false
 static var respawn_point := Vector3.ZERO
 static var selected_character := "mia"
 
+## Sound event bus: AudioManager assigns a Callable; emitters never touch audio code.
+static var on_sfx: Callable
+
 
 static func reset_run() -> void:
 	gems = 0
@@ -20,3 +23,8 @@ static func reset_run() -> void:
 	time_left = LEVEL_TIME
 	powerup_active = false
 	respawn_point = Vector3.ZERO
+
+
+static func fx(name: String) -> void:
+	if on_sfx.is_valid():
+		on_sfx.call(name)
