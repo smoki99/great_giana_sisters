@@ -15,6 +15,11 @@ var _dying := false
 var _last_title := ""
 
 func _ready() -> void:
+	for a in OS.get_cmdline_user_args():
+		if a.begins_with("e2e"):
+			# swiftshader renders ~1 fps; let physics catch up so browser tests
+			# get real-time-ish simulation (still fixed-step, just more steps/frame)
+			Engine.max_physics_steps_per_frame = 8
 	GameState.reset_run()
 	_refresh_title()
 	_title.show()
@@ -51,8 +56,9 @@ func _process(delta: float) -> void:
 		GameState.gems, ceili(GameState.time_left), GameState.lives,
 		"   POWER!" if GameState.powerup_active else ""]
 	# E2E bridge: page <title> mirrors run state for browser-side assertions
-	var st := "G%d T%d L%d%s" % [GameState.gems, ceili(GameState.time_left), GameState.lives,
-		"P" if GameState.powerup_active else ""]
+	var st := "%d G%d T%d L%d%s X%.0f Z%.0f" % [1 if GameState.playing else 0, GameState.gems,
+		ceili(GameState.time_left), GameState.lives, "P" if GameState.powerup_active else "",
+		_player.global_position.x, _player.global_position.z]
 	if st != _last_title:
 		_last_title = st
 		DisplayServer.window_set_title("Mia in Candy Land - %s" % st)

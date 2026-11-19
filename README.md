@@ -5,12 +5,13 @@ code or level data. All art is procedural primitives, all audio is synthesized a
 original DSP code (`game/src/logic/chiptune.gd`).
 
 ## Layout
-
 ```
 game/            Godot project (open project.godot in the editor)
-  src/logic/     pure-logic classes (movement, enemy, level def, chiptune) — headless-testable
-  src/world/     scenes: level, player, enemies, scenery, camera
-  src/ui/        HUD, AudioManager autoload, title/HUD rendering
+  src/logic/     pure-logic classes: player_state_machine, run_rules, chiptune,
+                 camera_spring, anim_driver — headless-testable
+  src/entities/  pickups, enemies, springs, checkpoints, gate, kill plane
+  src/world..    player.gd + scenes under game/scenes/ (level: sugarwood.tscn)
+  src/           main.gd (run flow), game_state.gd + audio_manager.gd (autoloads)
   tests/         unit suite (res://tests/run_tests.gd) + headless smoke (smoke_level.gd)
 tools/blender/   asset builder (blender -b -P tools/blender/build_assets.py -> game/assets/*.glb)
 scripts/         bun toolchain: ci, check-gd, e2e, zip-web, serve-web, gen-level
@@ -45,4 +46,4 @@ run `game/` in the Godot editor (F5). Controls: see [docs/controls.md](docs/cont
 
 0.1.0-alpha: full loop playable (3 lives, 40 gems, 200 s, checkpoints, 20-gem gate + flag win
 screen, stomp/spring movement, 4 enemy types, chiptune SFX + music with M toggle, fog/shadow
-lighting pass). Gameplay values live in `game/src/logic/game_rules.gd` — the only knobs file.
+lighting pass). Gameplay values live in `game/src/logic/run_rules.gd` — the only knobs file.

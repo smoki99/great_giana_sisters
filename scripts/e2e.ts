@@ -113,7 +113,7 @@ const consoleErrors: string[] = [];
 	const title = () => evaluate("document.title");
 
 	// 3. load + boot
-	await tab.send("Page.navigate", { url: `http://127.0.0.1:${PORT}/index.html` });
+	await tab.send("Page.navigate", { url: `http://127.0.0.1:${PORT}/index.html?e2e=1` });
 	for (let i = 0; i < 120; i++) {
 		if (await evaluate("!!document.querySelector('canvas')")) break;
 		await sleep(250);
@@ -144,7 +144,7 @@ const consoleErrors: string[] = [];
 	await tap("Space", 32);
 	await sleep(1200);
 	const t1 = String(await title());
-	check("engine running: title bridge updates (time ticks)", t1 !== t0 && /T\d+/.test(t1), `${t0} -> ${t1}`);
+	check("ENTER starts the run (playing flag in title)", / - 1 G\d+/.test(t1), `${t0} -> ${t1}`);
 	await shot("e2e_t10.png");
 
 	// 5. fps sample (logged; swiftshader has no gate)
@@ -157,15 +157,30 @@ const consoleErrors: string[] = [];
 
 	// 6. --full alpha choreography via the title bridge
 	if (FULL) {
-		await hold("KeyD", 68, 2500);
-		await sleep(500);
+		// first gem is 2 cells (8 m) east at x=8; walk with interleaved hops (gems float)
+		// camera sits at a 3/4 angle: D alone pulls north-east; D+S cancels to due east
+		for (let i = 0; i < 7; i++) {
+			await key("KeyD", 68, true);
+			await key("KeyS", 83, true);
+			await sleep(2200);
+			await key("KeyD", 68, false);
+			await key("KeyS", 83, false);
+			await tap("Space", 32);
+			await sleep(600);
+			console.log(`INFO gem-step ${i}: ${await title()}`);
+		}
+		await sleep(700);
 		const tg = String(await title());
 		check("gem pickup (G>=1 in title)", /G[1-9]/.test(tg), tg);
 		let lives2 = false;
 		for (let i = 0; i < 20 && !lives2; i++) { await hold("KeyW", 87, 500); await sleep(300); lives2 = /L2/.test(String(await title())); }
 		check("fall costs a life (L2)", lives2, String(await title()));
-		await sleep(1600); // respawn delay
-		check("respawn keeps you playing (L2 stable)", /L2/.test(String(await title())), String(await title()));
+		let respawned = false;
+		for (let i = 0; i < 10 && !respawned; i++) {
+			await sleep(1500);
+			respawned = /X0 Z8/.test(String(await title()));
+		}
+		check("respawn returns to respawn point", respawned, String(await title()));
 		await tap("KeyM", 77);
 		await sleep(400);
 		check("music toggle: no page errors so far", pageErrors.length === 0, pageErrors.join(" | "));
