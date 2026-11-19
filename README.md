@@ -44,6 +44,10 @@ run `game/` in the Godot editor (F5). Controls: see [docs/controls.md](docs/cont
 
 ## Status
 
+0.2.0-beta: fixed 3/4 camera (body yaw no longer orbits the boom, WASD stays screen-stable),
+`?e2e=1` physics catch-up wired into the web shell, deterministic full-playthrough e2e
+(11 checks incl. gem/stomp/checkpoint/death/gate via the title bridge).
+
 0.1.0-alpha: full loop playable (3 lives, 40 gems, 200 s, checkpoints, 20-gem gate + flag win
 screen, stomp/spring movement, 4 enemy types, chiptune SFX + music with M toggle, fog/shadow
 lighting pass). Gameplay values live in `game/src/logic/run_rules.gd` — the only knobs file.
