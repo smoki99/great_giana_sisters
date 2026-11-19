@@ -170,7 +170,15 @@ const consoleErrors: string[] = [];
 			console.log(`INFO gem-step ${i}: ${await title()}`);
 		}
 		await sleep(700);
-		const tg = String(await title());
+		let tg = String(await title());
+		// camera drift may steer us past the gem band (x~8, z~4-8): S/A zig-zag rescue sweep
+		for (let i = 0; i < 10 && !/G[1-9]/.test(tg); i++) {
+			await hold("KeyS", 83, 2200);
+			await tap("Space", 32);
+			await hold("KeyA", 65, 2200);
+			await sleep(500);
+			tg = String(await title());
+		}
 		check("gem pickup (G>=1 in title)", /G[1-9]/.test(tg), tg);
 		// deterministic self-kill: camera diagonals make W+A = due west; walking past x<0
 		// drops into the void along the whole west edge (works from any east-drift position)
