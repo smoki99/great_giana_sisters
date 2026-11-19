@@ -172,8 +172,18 @@ const consoleErrors: string[] = [];
 		await sleep(700);
 		const tg = String(await title());
 		check("gem pickup (G>=1 in title)", /G[1-9]/.test(tg), tg);
+		// deterministic self-kill: camera diagonals make W+A = due west; walking past x<0
+		// drops into the void along the whole west edge (works from any east-drift position)
 		let lives2 = false;
-		for (let i = 0; i < 20 && !lives2; i++) { await hold("KeyW", 87, 500); await sleep(300); lives2 = /L2/.test(String(await title())); }
+		for (let i = 0; i < 8 && !lives2; i++) {
+			await key("KeyW", 87, true);
+			await key("KeyA", 65, true);
+			await sleep(2500);
+			await key("KeyW", 87, false);
+			await key("KeyA", 65, false);
+			await sleep(400);
+			lives2 = /L2/.test(String(await title()));
+		}
 		check("fall costs a life (L2)", lives2, String(await title()));
 		let respawned = false;
 		for (let i = 0; i < 10 && !respawned; i++) {
