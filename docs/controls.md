@@ -2,7 +2,7 @@
 
 | Key | Action |
 |---|---|
-| `W A S D` / arrow keys | Move (camera-relative) |
+| `W A S D` / arrow keys | Move; camera is fixed, so `W` is always screen-up (into the depth), `D` screen-right |
 | `SPACE` | Jump; press again in mid-air for the spin double-jump |
 | `ENTER` | Start / confirm / back to title |
 | `1` / `2` | (on title) pick Mia or Lina |

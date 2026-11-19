@@ -134,7 +134,11 @@ func _physics_process(delta: float) -> void:
 	var hs := Vector2(velocity.x, velocity.z)
 	if hs.length() > 0.2:
 		_heading = lerp_angle(_heading, atan2(hs.x, -hs.y), TURN_SPEED * delta)
-		rotation.y = _heading
+		# yaw the MODEL only: Boom/Camera are children of Player, rotating the body would
+		# orbit the 3/4 camera on every direction change (input stays camera-relative, so a
+		# fixed boom also keeps W/D mapping stable)
+		if _model_anchor:
+			_model_anchor.rotation.y = _heading
 
 	_double_fx = maxf(0.0, _double_fx - delta)
 	if _anim:
