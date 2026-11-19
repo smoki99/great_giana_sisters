@@ -12,6 +12,7 @@ var _hud: Label
 var _player: CharacterBody3D
 var _epoch := 0            # invalidates pending respawn timers across restarts
 var _dying := false
+var _last_title := ""
 
 func _ready() -> void:
 	GameState.reset_run()
@@ -49,6 +50,12 @@ func _process(delta: float) -> void:
 	_hud.text = "GEMS %d   TIME %d   LIVES %d%s" % [
 		GameState.gems, ceili(GameState.time_left), GameState.lives,
 		"   POWER!" if GameState.powerup_active else ""]
+	# E2E bridge: page <title> mirrors run state for browser-side assertions
+	var st := "G%d T%d L%d%s" % [GameState.gems, ceili(GameState.time_left), GameState.lives,
+		"P" if GameState.powerup_active else ""]
+	if st != _last_title:
+		_last_title = st
+		DisplayServer.window_set_title("Mia in Candy Land - %s" % st)
 
 
 func _unhandled_input(event: InputEvent) -> void:
