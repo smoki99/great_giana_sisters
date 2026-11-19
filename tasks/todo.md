@@ -45,8 +45,8 @@ Mirror of `tasks/plan.md`. Check off only when the task's verification passed.
 - [x] T28 HUD art, title screen, controls overlay
 
 ## Phase 5 — Ship
-- [ ] T29 ci.ts full pipeline
-- [ ] T30 E2E browser smoke (screenshots, input probe, fps)
-- [ ] T31 perf + zip-size pass
-- [ ] T32 README, final zip, tag, push
-- [ ] Final: SPEC success criteria 1–6 verified
+- [x] T29 ci.ts full pipeline (fail-fast, CI OK in 81 s)
+- [x] T30 E2E browser smoke (raw CDP: 11 checks, shots, fps, title bridge)
+- [x] T31 perf + zip-size pass (10.6 MB zip, swiftshader ~1.5 fps software)
+- [x] T32 README, alpha zip 0.1.0, tag v0.1.0-alpha, pushed to origin
+- [x] Final: SPEC success criteria 1-6 verified (loop+alpha x2, 0 errors, one-shot CI, 10.6 MB, original assets, 109 checks)
