@@ -1,0 +1,2367 @@
+[gd_scene load_steps=28 format=3]
+
+[ext_resource type="PackedScene" path="res://assets/models/terrain/terrain_grass.glb" id="e1"]
+[ext_resource type="PackedScene" path="res://assets/models/scenery/cloud.glb" id="e2"]
+[ext_resource type="PackedScene" path="res://assets/models/props/platform_candy.glb" id="e3"]
+[ext_resource type="PackedScene" path="res://assets/models/scenery/tree.glb" id="e4"]
+[ext_resource type="PackedScene" path="res://scenes/entities/gem.tscn" id="e5"]
+[ext_resource type="PackedScene" path="res://scenes/entities/spring.tscn" id="e6"]
+[ext_resource type="PackedScene" path="res://scenes/entities/checkpoint.tscn" id="e7"]
+[ext_resource type="PackedScene" path="res://assets/models/props/block_brick.glb" id="e8"]
+[ext_resource type="PackedScene" path="res://scenes/entities/gate.tscn" id="e9"]
+[ext_resource type="PackedScene" path="res://assets/models/scenery/bush_candy.glb" id="e10"]
+[ext_resource type="PackedScene" path="res://scenes/entities/walker.tscn" id="e11"]
+[ext_resource type="PackedScene" path="res://scenes/entities/hopper.tscn" id="e12"]
+[ext_resource type="PackedScene" path="res://assets/models/scenery/bush.glb" id="e13"]
+[ext_resource type="PackedScene" path="res://scenes/entities/diamond.tscn" id="e14"]
+[ext_resource type="Script" path="res://src/entities/kill_plane.gd" id="e15"]
+[ext_resource type="Script" path="res://src/player.gd" id="e16"]
+
+[sub_resource type="ProceduralSkyMaterial" id="sky_mat"]
+sky_top_color = Color(0.25, 0.72, 1, 1)
+sky_horizon_color = Color(0.82, 0.95, 0.92, 1)
+ground_bottom_color = Color(0.34, 0.52, 0.42, 1)
+ground_horizon_color = Color(0.82, 0.95, 0.92, 1)
+
+[sub_resource type="Sky" id="sky"]
+sky_material = SubResource("sky_mat")
+
+[sub_resource type="Environment" id="env"]
+background_mode = 2
+sky = SubResource("sky")
+tonemap_mode = 1
+tonemap_white = 1.35
+ambient_light_source = 2
+ambient_light_color = Color(0.85, 0.88, 1, 1)
+ambient_light_energy = 0.35
+
+[sub_resource type="BoxShape3D" id="grass_shape"]
+size = Vector3(4, 1.29, 4)
+
+[sub_resource type="BoxShape3D" id="brick_col_1"]
+size = Vector3(1.02, 1, 1.02)
+
+[sub_resource type="BoxShape3D" id="brick_col_2"]
+size = Vector3(1.02, 2, 1.02)
+
+[sub_resource type="BoxShape3D" id="brick_col_3"]
+size = Vector3(1.02, 3, 1.02)
+
+[sub_resource type="BoxShape3D" id="candy_shape"]
+size = Vector3(2, 0.42, 1.02)
+
+[sub_resource type="BoxShape3D" id="kill_shape"]
+size = Vector3(240, 1, 80)
+
+[sub_resource type="CapsuleShape3D" id="body_shape"]
+radius = 0.4
+height = 1.7
+
+[node name="Sugarwood" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("env")
+
+[node name="Sun" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866025, -0.353553, 0.353553, 0, 0.707107, 0.707107, -0.5, -0.612372, 0.612372, 0, 12, 0)
+shadow_enabled = true
+
+[node name="Terrain" type="StaticBody3D" parent="."]
+
+[node name="Scenery" type="Node3D" parent="."]
+
+[node name="Entities" type="Node3D" parent="."]
+
+[node name="tile_0" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+
+[node name="tcol_1" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="cloud_2" parent="Scenery" instance=ExtResource("e2")]
+transform = Transform3D(1.000000, 0, 0.000000, 0, 1, 0, 0.000000, 0, 1.000000, 0, 7.29, 0)
+
+[node name="tile_3" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 0)
+
+[node name="tcol_4" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_5" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 0)
+
+[node name="tcol_6" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_7" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 0)
+
+[node name="tcol_8" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_9" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 0)
+
+[node name="tcol_10" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_11" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 0)
+
+[node name="tcol_12" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="shelf_13" parent="Terrain" instance=ExtResource("e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 2.99, 0)
+
+[node name="scol_14" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 2.99, 0)
+shape = SubResource("candy_shape")
+
+[node name="tile_15" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, 0)
+
+[node name="tcol_16" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_17" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, 0)
+
+[node name="tcol_18" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_19" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 0)
+
+[node name="tcol_20" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_21" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, 0)
+
+[node name="tcol_22" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_23" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0, 0)
+
+[node name="tcol_24" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_25" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0, 0)
+
+[node name="tcol_26" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tree_27" parent="Scenery" instance=ExtResource("e4")]
+transform = Transform3D(-0.000000, 0, -1.000000, 0, 1, 0, 1.000000, 0, -0.000000, 44, -0.05999999999999994, 0)
+
+[node name="tile_28" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0, 0)
+
+[node name="tcol_29" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tree_30" parent="Scenery" instance=ExtResource("e4")]
+transform = Transform3D(1.000000, 0, 0.000000, 0, 1, 0, 0.000000, 0, 1.000000, 48, -0.05999999999999994, 0)
+
+[node name="tile_31" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0, 0)
+
+[node name="tcol_32" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_33" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0, 0)
+
+[node name="tcol_34" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_35" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0, 0)
+
+[node name="tcol_36" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_37" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0, 0)
+
+[node name="tcol_38" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_39" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0, 0)
+
+[node name="tcol_40" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_41" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 0, 0)
+
+[node name="tcol_42" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_43" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76, 0, 0)
+
+[node name="tcol_44" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_45" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 0, 0)
+
+[node name="tcol_46" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="shelf_47" parent="Terrain" instance=ExtResource("e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 2.99, 0)
+
+[node name="scol_48" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 2.99, 0)
+shape = SubResource("candy_shape")
+
+[node name="tile_49" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 0, 0)
+
+[node name="tcol_50" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_51" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0, 0)
+
+[node name="tcol_52" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_53" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 0, 0)
+
+[node name="tcol_54" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_55" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 0, 0)
+
+[node name="tcol_56" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_57" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0, 0)
+
+[node name="tcol_58" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_59" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 0, 0)
+
+[node name="tcol_60" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_61" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0, 0)
+
+[node name="tcol_62" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_63" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, 0, 0)
+
+[node name="tcol_64" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="tile_65" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0, 0)
+
+[node name="tcol_66" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0.145, 0)
+shape = SubResource("grass_shape")
+
+[node name="shelf_67" parent="Terrain" instance=ExtResource("e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 2.99, 0)
+
+[node name="scol_68" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 2.99, 0)
+shape = SubResource("candy_shape")
+
+[node name="tile_69" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+
+[node name="tcol_70" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_71" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4)
+
+[node name="tcol_72" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_73" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 4)
+
+[node name="tcol_74" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="e_g_75" parent="Entities" instance=ExtResource("e5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.79, 4)
+
+[node name="tile_76" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 4)
+
+[node name="tcol_77" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_78" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 4)
+
+[node name="tcol_79" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_80" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 4)
+
+[node name="tcol_81" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_82" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, 4)
+
+[node name="tcol_83" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_84" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, 4)
+
+[node name="tcol_85" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="e_g_86" parent="Entities" instance=ExtResource("e5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0.79, 4)
+
+[node name="tile_87" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 4)
+
+[node name="tcol_88" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_89" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, 4)
+
+[node name="tcol_90" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_91" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0, 4)
+
+[node name="tcol_92" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_93" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0, 4)
+
+[node name="tcol_94" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_95" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0, 4)
+
+[node name="tcol_96" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_97" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0, 4)
+
+[node name="tcol_98" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_99" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0, 4)
+
+[node name="tcol_100" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_101" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0, 4)
+
+[node name="tcol_102" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tree_103" parent="Scenery" instance=ExtResource("e4")]
+transform = Transform3D(-1.000000, 0, 0.000000, 0, 1, 0, -0.000000, 0, -1.000000, 60, -0.05999999999999994, 4)
+
+[node name="tile_104" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0, 4)
+
+[node name="tcol_105" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tree_106" parent="Scenery" instance=ExtResource("e4")]
+transform = Transform3D(-0.000000, 0, -1.000000, 0, 1, 0, 1.000000, 0, -0.000000, 64, -0.05999999999999994, 4)
+
+[node name="tile_107" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0, 4)
+
+[node name="tcol_108" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_109" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 0, 4)
+
+[node name="tcol_110" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_111" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76, 0, 4)
+
+[node name="tcol_112" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_113" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 0, 4)
+
+[node name="tcol_114" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_115" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 0, 4)
+
+[node name="tcol_116" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="e_g_117" parent="Entities" instance=ExtResource("e5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 0.79, 4)
+
+[node name="tile_118" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0, 4)
+
+[node name="tcol_119" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_120" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 0, 4)
+
+[node name="tcol_121" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_122" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 0, 4)
+
+[node name="tcol_123" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_124" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0, 4)
+
+[node name="tcol_125" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_126" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 0, 4)
+
+[node name="tcol_127" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_128" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0, 4)
+
+[node name="tcol_129" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_130" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, 0, 4)
+
+[node name="tcol_131" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_132" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0, 4)
+
+[node name="tcol_133" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0.145, 4)
+shape = SubResource("grass_shape")
+
+[node name="tile_134" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 8)
+
+[node name="tcol_135" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="tile_136" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 8)
+
+[node name="tcol_137" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="tile_138" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 8)
+
+[node name="tcol_139" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="e_g_140" parent="Entities" instance=ExtResource("e5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.79, 8)
+
+[node name="tile_141" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 8)
+
+[node name="tcol_142" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="tile_143" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 8)
+
+[node name="tcol_144" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="e_s_145" parent="Entities" instance=ExtResource("e6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.74, 8)
+
+[node name="tile_146" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 8)
+
+[node name="tcol_147" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="tile_148" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, 8)
+
+[node name="tcol_149" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="tile_150" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, 8)
+
+[node name="tcol_151" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="tile_152" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 8)
+
+[node name="tcol_153" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="tile_154" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0, 8)
+
+[node name="tcol_155" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="tile_156" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0, 8)
+
+[node name="tcol_157" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="tile_158" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0, 8)
+
+[node name="tcol_159" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="tile_160" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0, 8)
+
+[node name="tcol_161" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="e_K_162" parent="Entities" instance=ExtResource("e7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0.79, 8)
+
+[node name="tile_163" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0, 8)
+
+[node name="tcol_164" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="tile_165" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0, 8)
+
+[node name="tcol_166" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="tile_167" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0, 8)
+
+[node name="tcol_168" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="tile_169" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 0, 8)
+
+[node name="tcol_170" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="tile_171" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 0, 8)
+
+[node name="tcol_172" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="tile_173" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0, 8)
+
+[node name="tcol_174" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="e_s_175" parent="Entities" instance=ExtResource("e6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0.74, 8)
+
+[node name="tile_176" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 0, 8)
+
+[node name="tcol_177" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="tile_178" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 0, 8)
+
+[node name="tcol_179" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="tile_180" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0, 8)
+
+[node name="tcol_181" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="brick_182" parent="Terrain" instance=ExtResource("e8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 1.29, 8)
+
+[node name="brick_183" parent="Terrain" instance=ExtResource("e8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 2.29, 8)
+
+[node name="bcol_184" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 1.79, 8)
+shape = SubResource("brick_col_2")
+
+[node name="tile_185" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 0, 8)
+
+[node name="tcol_186" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="brick_187" parent="Terrain" instance=ExtResource("e8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 1.29, 8)
+
+[node name="bcol_188" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 1.29, 8)
+shape = SubResource("brick_col_1")
+
+[node name="tile_189" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0, 8)
+
+[node name="tcol_190" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="brick_191" parent="Terrain" instance=ExtResource("e8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 1.29, 8)
+
+[node name="bcol_192" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 1.29, 8)
+shape = SubResource("brick_col_1")
+
+[node name="tile_193" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, 0, 8)
+
+[node name="tcol_194" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="tile_195" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0, 8)
+
+[node name="tcol_196" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0.145, 8)
+shape = SubResource("grass_shape")
+
+[node name="e_G_197" parent="Entities" instance=ExtResource("e9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 2.09, 8)
+
+[node name="tile_198" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 12)
+
+[node name="tcol_199" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_200" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 12)
+
+[node name="tcol_201" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_202" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 12)
+
+[node name="tcol_203" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_204" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 12)
+
+[node name="tcol_205" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_206" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 12)
+
+[node name="tcol_207" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="bush_candy_208" parent="Scenery" instance=ExtResource("e10")]
+transform = Transform3D(0.000000, 0, 1.000000, 0, 1, 0, -1.000000, 0, 0.000000, 16, 0.39, 12)
+
+[node name="tile_209" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 12)
+
+[node name="tcol_210" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_211" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, 12)
+
+[node name="tcol_212" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_213" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, 12)
+
+[node name="tcol_214" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_215" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 12)
+
+[node name="tcol_216" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_217" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0, 12)
+
+[node name="tcol_218" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_219" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0, 12)
+
+[node name="tcol_220" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_221" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0, 12)
+
+[node name="tcol_222" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_223" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0, 12)
+
+[node name="tcol_224" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_225" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0, 12)
+
+[node name="tcol_226" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_227" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0, 12)
+
+[node name="tcol_228" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_229" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0, 12)
+
+[node name="tcol_230" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_231" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 0, 12)
+
+[node name="tcol_232" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_233" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 0, 12)
+
+[node name="tcol_234" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_235" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0, 12)
+
+[node name="tcol_236" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_237" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 0, 12)
+
+[node name="tcol_238" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_239" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 0, 12)
+
+[node name="tcol_240" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_241" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0, 12)
+
+[node name="tcol_242" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_243" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 0, 12)
+
+[node name="tcol_244" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="brick_245" parent="Terrain" instance=ExtResource("e8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 1.29, 12)
+
+[node name="bcol_246" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 1.29, 12)
+shape = SubResource("brick_col_1")
+
+[node name="tile_247" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0, 12)
+
+[node name="tcol_248" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_249" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, 0, 12)
+
+[node name="tcol_250" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_251" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0, 12)
+
+[node name="tcol_252" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0.145, 12)
+shape = SubResource("grass_shape")
+
+[node name="tile_253" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 16)
+
+[node name="tcol_254" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="tile_255" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 16)
+
+[node name="tcol_256" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="tile_257" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 16)
+
+[node name="tcol_258" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="e_w_259" parent="Entities" instance=ExtResource("e11")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 1.34, 16)
+
+[node name="tile_260" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 16)
+
+[node name="tcol_261" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="tile_262" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 16)
+
+[node name="tcol_263" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="tile_264" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 16)
+
+[node name="tcol_265" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="brick_266" parent="Terrain" instance=ExtResource("e8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 1.29, 16)
+
+[node name="bcol_267" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 1.29, 16)
+shape = SubResource("brick_col_1")
+
+[node name="tile_268" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, 16)
+
+[node name="tcol_269" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="brick_270" parent="Terrain" instance=ExtResource("e8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 1.29, 16)
+
+[node name="bcol_271" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 1.29, 16)
+shape = SubResource("brick_col_1")
+
+[node name="tile_272" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, 16)
+
+[node name="tcol_273" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="tile_274" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 16)
+
+[node name="tcol_275" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="tile_276" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, 16)
+
+[node name="tcol_277" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="e_w_278" parent="Entities" instance=ExtResource("e11")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 1.34, 16)
+
+[node name="tile_279" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0, 16)
+
+[node name="tcol_280" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="tile_281" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0, 16)
+
+[node name="tcol_282" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="e_g_283" parent="Entities" instance=ExtResource("e5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0.79, 16)
+
+[node name="tile_284" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0, 16)
+
+[node name="tcol_285" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="tile_286" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0, 16)
+
+[node name="tcol_287" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="e_h_288" parent="Entities" instance=ExtResource("e12")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 1.84, 16)
+
+[node name="tile_289" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0, 16)
+
+[node name="tcol_290" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="tile_291" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0, 16)
+
+[node name="tcol_292" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="tile_293" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0, 16)
+
+[node name="tcol_294" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="brick_295" parent="Terrain" instance=ExtResource("e8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 1.29, 16)
+
+[node name="brick_296" parent="Terrain" instance=ExtResource("e8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 2.29, 16)
+
+[node name="bcol_297" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 1.79, 16)
+shape = SubResource("brick_col_2")
+
+[node name="tile_298" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0, 16)
+
+[node name="tcol_299" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="tile_300" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 0, 16)
+
+[node name="tcol_301" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="tile_302" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76, 0, 16)
+
+[node name="tcol_303" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="bush_candy_304" parent="Scenery" instance=ExtResource("e10")]
+transform = Transform3D(-0.000000, 0, -1.000000, 0, 1, 0, 1.000000, 0, -0.000000, 76, 0.39, 16)
+
+[node name="tile_305" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 0, 16)
+
+[node name="tcol_306" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="tile_307" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 0, 16)
+
+[node name="tcol_308" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="tile_309" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0, 16)
+
+[node name="tcol_310" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="tile_311" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 0, 16)
+
+[node name="tcol_312" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="brick_313" parent="Terrain" instance=ExtResource("e8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 1.29, 16)
+
+[node name="bcol_314" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 1.29, 16)
+shape = SubResource("brick_col_1")
+
+[node name="tile_315" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 0, 16)
+
+[node name="tcol_316" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="brick_317" parent="Terrain" instance=ExtResource("e8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 1.29, 16)
+
+[node name="bcol_318" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 1.29, 16)
+shape = SubResource("brick_col_1")
+
+[node name="tile_319" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0, 16)
+
+[node name="tcol_320" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="brick_321" parent="Terrain" instance=ExtResource("e8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 1.29, 16)
+
+[node name="bcol_322" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 1.29, 16)
+shape = SubResource("brick_col_1")
+
+[node name="tile_323" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 0, 16)
+
+[node name="tcol_324" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="tile_325" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0, 16)
+
+[node name="tcol_326" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="tile_327" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, 0, 16)
+
+[node name="tcol_328" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="bush_candy_329" parent="Scenery" instance=ExtResource("e10")]
+transform = Transform3D(1.000000, 0, 0.000000, 0, 1, 0, 0.000000, 0, 1.000000, 112, 0.39, 16)
+
+[node name="tile_330" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0, 16)
+
+[node name="tcol_331" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0.145, 16)
+shape = SubResource("grass_shape")
+
+[node name="tile_332" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 20)
+
+[node name="tcol_333" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_334" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 20)
+
+[node name="tcol_335" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_336" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 20)
+
+[node name="tcol_337" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tree_338" parent="Scenery" instance=ExtResource("e4")]
+transform = Transform3D(0.000000, 0, 1.000000, 0, 1, 0, -1.000000, 0, 0.000000, 8, -0.05999999999999994, 20)
+
+[node name="tile_339" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 20)
+
+[node name="tcol_340" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_341" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 20)
+
+[node name="tcol_342" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_343" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 20)
+
+[node name="tcol_344" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_345" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, 20)
+
+[node name="tcol_346" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_347" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, 20)
+
+[node name="tcol_348" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_349" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 20)
+
+[node name="tcol_350" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_351" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, 20)
+
+[node name="tcol_352" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="bush_353" parent="Scenery" instance=ExtResource("e13")]
+transform = Transform3D(1.000000, 0, 0.000000, 0, 1, 0, 0.000000, 0, 1.000000, 36, 0.39, 20)
+
+[node name="tile_354" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0, 20)
+
+[node name="tcol_355" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_356" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0, 20)
+
+[node name="tcol_357" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_358" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0, 20)
+
+[node name="tcol_359" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_360" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0, 20)
+
+[node name="tcol_361" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_362" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0, 20)
+
+[node name="tcol_363" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_364" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0, 20)
+
+[node name="tcol_365" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_366" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0, 20)
+
+[node name="tcol_367" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_368" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0, 20)
+
+[node name="tcol_369" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="cloud_370" parent="Scenery" instance=ExtResource("e2")]
+transform = Transform3D(1.000000, 0, 0.000000, 0, 1, 0, 0.000000, 0, 1.000000, 68, 9.89, 20)
+
+[node name="tile_371" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 0, 20)
+
+[node name="tcol_372" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_373" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76, 0, 20)
+
+[node name="tcol_374" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_375" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 0, 20)
+
+[node name="tcol_376" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_377" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 0, 20)
+
+[node name="tcol_378" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_379" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0, 20)
+
+[node name="tcol_380" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_381" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 0, 20)
+
+[node name="tcol_382" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_383" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 0, 20)
+
+[node name="tcol_384" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_385" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0, 20)
+
+[node name="tcol_386" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_387" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 0, 20)
+
+[node name="tcol_388" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tree_389" parent="Scenery" instance=ExtResource("e4")]
+transform = Transform3D(0.000000, 0, 1.000000, 0, 1, 0, -1.000000, 0, 0.000000, 104, -0.05999999999999994, 20)
+
+[node name="tile_390" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0, 20)
+
+[node name="tcol_391" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_392" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, 0, 20)
+
+[node name="tcol_393" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_394" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0, 20)
+
+[node name="tcol_395" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0.145, 20)
+shape = SubResource("grass_shape")
+
+[node name="tile_396" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 24)
+
+[node name="tcol_397" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_398" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 24)
+
+[node name="tcol_399" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_400" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 24)
+
+[node name="tcol_401" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_402" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 24)
+
+[node name="tcol_403" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_404" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 24)
+
+[node name="tcol_405" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="e_g_406" parent="Entities" instance=ExtResource("e5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.79, 24)
+
+[node name="tile_407" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 24)
+
+[node name="tcol_408" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_409" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, 24)
+
+[node name="tcol_410" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="e_g_411" parent="Entities" instance=ExtResource("e5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.79, 24)
+
+[node name="tile_412" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, 24)
+
+[node name="tcol_413" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_414" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 24)
+
+[node name="tcol_415" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_416" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, 24)
+
+[node name="tcol_417" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_418" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0, 24)
+
+[node name="tcol_419" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_420" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0, 24)
+
+[node name="tcol_421" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="e_d_422" parent="Entities" instance=ExtResource("e14")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0.79, 24)
+
+[node name="tile_423" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0, 24)
+
+[node name="tcol_424" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_425" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0, 24)
+
+[node name="tcol_426" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_427" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0, 24)
+
+[node name="tcol_428" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_429" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0, 24)
+
+[node name="tcol_430" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_431" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0, 24)
+
+[node name="tcol_432" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_433" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0, 24)
+
+[node name="tcol_434" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_435" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 0, 24)
+
+[node name="tcol_436" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_437" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76, 0, 24)
+
+[node name="tcol_438" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="e_g_439" parent="Entities" instance=ExtResource("e5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76, 0.79, 24)
+
+[node name="tile_440" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 0, 24)
+
+[node name="tcol_441" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_442" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 0, 24)
+
+[node name="tcol_443" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_444" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0, 24)
+
+[node name="tcol_445" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_446" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 0, 24)
+
+[node name="tcol_447" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_448" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 0, 24)
+
+[node name="tcol_449" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_450" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0, 24)
+
+[node name="tcol_451" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_452" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 0, 24)
+
+[node name="tcol_453" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_454" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0, 24)
+
+[node name="tcol_455" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_456" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, 0, 24)
+
+[node name="tcol_457" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_458" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0, 24)
+
+[node name="tcol_459" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0.145, 24)
+shape = SubResource("grass_shape")
+
+[node name="tile_460" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 28)
+
+[node name="tcol_461" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_462" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 28)
+
+[node name="tcol_463" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_464" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 28)
+
+[node name="tcol_465" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_466" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 28)
+
+[node name="tcol_467" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="bush_candy_468" parent="Scenery" instance=ExtResource("e10")]
+transform = Transform3D(1.000000, 0, 0.000000, 0, 1, 0, 0.000000, 0, 1.000000, 12, 0.39, 28)
+
+[node name="tile_469" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 28)
+
+[node name="tcol_470" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_471" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 28)
+
+[node name="tcol_472" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_473" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, 28)
+
+[node name="tcol_474" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_475" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, 28)
+
+[node name="tcol_476" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_477" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 28)
+
+[node name="tcol_478" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_479" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, 28)
+
+[node name="tcol_480" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_481" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0, 28)
+
+[node name="tcol_482" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tree_483" parent="Scenery" instance=ExtResource("e4")]
+transform = Transform3D(-0.000000, 0, -1.000000, 0, 1, 0, 1.000000, 0, -0.000000, 40, -0.05999999999999994, 28)
+
+[node name="tile_484" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0, 28)
+
+[node name="tcol_485" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_486" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0, 28)
+
+[node name="tcol_487" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_488" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0, 28)
+
+[node name="tcol_489" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_490" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0, 28)
+
+[node name="tcol_491" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_492" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0, 28)
+
+[node name="tcol_493" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="e_w_494" parent="Entities" instance=ExtResource("e11")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 1.34, 28)
+
+[node name="tile_495" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0, 28)
+
+[node name="tcol_496" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_497" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0, 28)
+
+[node name="tcol_498" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_499" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 0, 28)
+
+[node name="tcol_500" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_501" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76, 0, 28)
+
+[node name="tcol_502" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_503" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 0, 28)
+
+[node name="tcol_504" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_505" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 0, 28)
+
+[node name="tcol_506" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_507" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0, 28)
+
+[node name="tcol_508" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_509" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 0, 28)
+
+[node name="tcol_510" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="bush_511" parent="Scenery" instance=ExtResource("e13")]
+transform = Transform3D(1.000000, 0, 0.000000, 0, 1, 0, 0.000000, 0, 1.000000, 92, 0.39, 28)
+
+[node name="tile_512" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 0, 28)
+
+[node name="tcol_513" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_514" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0, 28)
+
+[node name="tcol_515" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_516" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 0, 28)
+
+[node name="tcol_517" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_518" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0, 28)
+
+[node name="tcol_519" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="e_g_520" parent="Entities" instance=ExtResource("e5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0.79, 28)
+
+[node name="tile_521" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, 0, 28)
+
+[node name="tcol_522" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_523" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0, 28)
+
+[node name="tcol_524" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0.145, 28)
+shape = SubResource("grass_shape")
+
+[node name="tile_525" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 32)
+
+[node name="tcol_526" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="cloud_527" parent="Scenery" instance=ExtResource("e2")]
+transform = Transform3D(1.000000, 0, 0.000000, 0, 1, 0, 0.000000, 0, 1.000000, 0, 9.89, 32)
+
+[node name="tile_528" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 32)
+
+[node name="tcol_529" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_530" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 32)
+
+[node name="tcol_531" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_532" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 32)
+
+[node name="tcol_533" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_534" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 32)
+
+[node name="tcol_535" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_536" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 32)
+
+[node name="tcol_537" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_538" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, 32)
+
+[node name="tcol_539" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_540" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, 32)
+
+[node name="tcol_541" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_542" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 32)
+
+[node name="tcol_543" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="bush_candy_544" parent="Scenery" instance=ExtResource("e10")]
+transform = Transform3D(1.000000, 0, 0.000000, 0, 1, 0, 0.000000, 0, 1.000000, 32, 0.39, 32)
+
+[node name="tile_545" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, 32)
+
+[node name="tcol_546" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_547" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0, 32)
+
+[node name="tcol_548" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_549" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0, 32)
+
+[node name="tcol_550" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="e_g_551" parent="Entities" instance=ExtResource("e5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0.79, 32)
+
+[node name="tile_552" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0, 32)
+
+[node name="tcol_553" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_554" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0, 32)
+
+[node name="tcol_555" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_556" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0, 32)
+
+[node name="tcol_557" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_558" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0, 32)
+
+[node name="tcol_559" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="cloud_560" parent="Scenery" instance=ExtResource("e2")]
+transform = Transform3D(-0.000000, 0, -1.000000, 0, 1, 0, 1.000000, 0, -0.000000, 60, 9.89, 32)
+
+[node name="tile_561" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0, 32)
+
+[node name="tcol_562" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_563" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0, 32)
+
+[node name="tcol_564" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_565" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 0, 32)
+
+[node name="tcol_566" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_567" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76, 0, 32)
+
+[node name="tcol_568" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_569" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 0, 32)
+
+[node name="tcol_570" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_571" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 0, 32)
+
+[node name="tcol_572" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_573" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0, 32)
+
+[node name="tcol_574" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tree_575" parent="Scenery" instance=ExtResource("e4")]
+transform = Transform3D(-1.000000, 0, 0.000000, 0, 1, 0, -0.000000, 0, -1.000000, 88, -0.05999999999999994, 32)
+
+[node name="tile_576" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 0, 32)
+
+[node name="tcol_577" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_578" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 0, 32)
+
+[node name="tcol_579" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_580" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0, 32)
+
+[node name="tcol_581" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_582" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 0, 32)
+
+[node name="tcol_583" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_584" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0, 32)
+
+[node name="tcol_585" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="e_g_586" parent="Entities" instance=ExtResource("e5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0.79, 32)
+
+[node name="tile_587" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, 0, 32)
+
+[node name="tcol_588" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_589" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0, 32)
+
+[node name="tcol_590" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0.145, 32)
+shape = SubResource("grass_shape")
+
+[node name="tile_591" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 36)
+
+[node name="tcol_592" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_593" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 36)
+
+[node name="tcol_594" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_595" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 36)
+
+[node name="tcol_596" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_597" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 36)
+
+[node name="tcol_598" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_599" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0, 36)
+
+[node name="tcol_600" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tree_601" parent="Scenery" instance=ExtResource("e4")]
+transform = Transform3D(-0.000000, 0, -1.000000, 0, 1, 0, 1.000000, 0, -0.000000, 16, -0.05999999999999994, 36)
+
+[node name="tile_602" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0, 36)
+
+[node name="tcol_603" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_604" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0, 36)
+
+[node name="tcol_605" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 24, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_606" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0, 36)
+
+[node name="tcol_607" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_608" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0, 36)
+
+[node name="tcol_609" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 32, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_610" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0, 36)
+
+[node name="tcol_611" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 36, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_612" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0, 36)
+
+[node name="tcol_613" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_614" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0, 36)
+
+[node name="tcol_615" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_616" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0, 36)
+
+[node name="tcol_617" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 48, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="bush_candy_618" parent="Scenery" instance=ExtResource("e10")]
+transform = Transform3D(-0.000000, 0, -1.000000, 0, 1, 0, 1.000000, 0, -0.000000, 48, 0.39, 36)
+
+[node name="tile_619" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0, 36)
+
+[node name="tcol_620" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_621" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0, 36)
+
+[node name="tcol_622" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 56, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_623" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0, 36)
+
+[node name="tcol_624" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_625" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0, 36)
+
+[node name="tcol_626" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_627" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0, 36)
+
+[node name="tcol_628" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 68, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_629" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 0, 36)
+
+[node name="tcol_630" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 72, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tree_631" parent="Scenery" instance=ExtResource("e4")]
+transform = Transform3D(0.000000, 0, 1.000000, 0, 1, 0, -1.000000, 0, 0.000000, 72, -0.05999999999999994, 36)
+
+[node name="tile_632" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76, 0, 36)
+
+[node name="tcol_633" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 76, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_634" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 0, 36)
+
+[node name="tcol_635" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 80, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_636" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 0, 36)
+
+[node name="tcol_637" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 84, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_638" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0, 36)
+
+[node name="tcol_639" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 88, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_640" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 0, 36)
+
+[node name="tcol_641" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 92, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_642" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 0, 36)
+
+[node name="tcol_643" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 96, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_644" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0, 36)
+
+[node name="tcol_645" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 100, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_646" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 0, 36)
+
+[node name="tcol_647" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 104, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_648" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0, 36)
+
+[node name="tcol_649" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 108, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_650" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, 0, 36)
+
+[node name="tcol_651" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 112, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="tile_652" parent="Terrain" instance=ExtResource("e1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0, 36)
+
+[node name="tcol_653" type="CollisionShape3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 116, 0.145, 36)
+shape = SubResource("grass_shape")
+
+[node name="KillPlane" type="Area3D" parent="."]
+script = ExtResource("e15")
+
+[node name="Coll" type="CollisionShape3D" parent="KillPlane"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 60, -6, 20)
+shape = SubResource("kill_shape")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8400000000000001, 8)
+script = ExtResource("e16")
+
+[node name="Model" type="Node3D" parent="Player"]
+
+[node name="Coll" type="CollisionShape3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+shape = SubResource("body_shape")
+
+[node name="Boom" type="Node3D" parent="Player"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 1.6, 0)
+
+[node name="Arm" type="SpringArm3D" parent="Player/Boom"]
+spring_length = 6.0
+
+[node name="Cam" type="Camera3D" parent="Player/Boom/Arm"]
+current = true
+fov = 70.0

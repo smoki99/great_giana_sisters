@@ -1,7 +1,8 @@
 // ci.ts — pipeline stages for Mia in Candy Land.
 // usage: bun scripts/ci.ts [--stages=import,check,export,zip]
 // stages: assets | import | check | unit | export | zip | e2e (default: import,check,export,zip)
-const GODOT = `${process.env.HOME}/.local/bin/godot`;
+const GODOT = process.env.GODOT ?? `${process.env.HOME}/.local/bin/godot`;
+const BLENDER = process.env.BLENDER ?? `${process.env.HOME}/.local/bin/blender`;
 import { mkdirSync } from "node:fs";
 mkdirSync("build/web", { recursive: true });
 

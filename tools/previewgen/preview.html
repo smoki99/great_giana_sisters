@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>body{margin:0;background:#000}canvas{display:block}</style>
+<script type="importmap">
+{"imports":{"three":"./vendor/three.module.js"}}
+</script>
+</head>
+<body>
+<script type="module">
+import * as THREE from "three";
+import { GLTFLoader } from "./vendor/GLTFLoader.js";
+
+const glb = new URLSearchParams(location.search).get("glb");
+const anim = new URLSearchParams(location.search).get("anim") || "";
+const tf = parseFloat(new URLSearchParams(location.search).get("t")) || 0.35;
+const SIZE = 320;
+
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(SIZE, SIZE);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x8ec9f0);
+scene.add(new THREE.HemisphereLight(0xfff2d8, 0x5a4632, 2.0));
+const dir = new THREE.DirectionalLight(0xffffff, 2.2);
+dir.position.set(2.5, 4, 2);
+scene.add(dir);
+
+const cam = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
+
+function shoot() {
+  renderer.render(scene, cam);
+  const c2 = document.createElement("canvas");
+  c2.width = SIZE; c2.height = SIZE;
+  const ctx = c2.getContext("2d");
+  ctx.drawImage(renderer.domElement, 0, 0);
+  const d = ctx.getImageData(0, 0, SIZE, SIZE).data;
+  let min = 255, max = 0;
+  for (let i = 0; i < d.length; i += 4) {
+    const l = (d[i] + d[i + 1] + d[i + 2]) / 3;
+    if (l < min) min = l;
+    if (l > max) max = l;
+  }
+  window.__READY = 1;
+}
+
+new GLTFLoader().load(glb, (gltf) => {
+  const root = gltf.scene;
+  root.traverse(o => { if (o.isMesh) o.frustumCulled = false; });
+  const clips = gltf.animations || [];
+  if (clips.length && anim !== "none") {
+    const pick = clips.find(c => c.name === anim) || clips.find(c => /run/.test(c.name)) || clips[0];
+    const mixer = new THREE.AnimationMixer(root);
+    mixer.clipAction(pick).play();
+    mixer.setTime(pick.duration * tf);
+  }
+  const box = new THREE.Box3().setFromObject(root);
+  const size = box.getSize(new THREE.Vector3());
+  const center = box.getCenter(new THREE.Vector3());
+  root.position.sub(center);
+  const pivot = new THREE.Group();
+  pivot.add(root);
+  scene.add(pivot);
+  const d = Math.max(size.x, size.y, size.z, 0.3);
+  cam.position.set(d * 0.85, d * 0.68, d * 1.5);
+  cam.lookAt(0, 0, 0);
+  shoot();
+}, undefined, (err) => { window.__ERR = String(err); window.__READY = 1; });
+</script>
+</body>
+</html>

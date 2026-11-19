@@ -17,10 +17,6 @@ window/size/viewport_height=720
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
 
-[autoload]
-
-GameState="*res://src/game_state.gd"
-
 [input]
 
 move_left={

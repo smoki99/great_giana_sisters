@@ -1,0 +1,23 @@
+{
+  "assets": [
+    { "id": "terrain_grass",   "builder": "terrain",   "out": "terrain/terrain_grass.glb",   "colors": { "top": [0.35, 0.75, 0.35], "side": [0.55, 0.38, 0.22] } },
+    { "id": "terrain_ice",     "builder": "terrain",   "out": "terrain/terrain_ice.glb",     "colors": { "top": [0.72, 0.92, 1.0], "side": [0.45, 0.65, 0.85] } },
+    { "id": "platform_candy",  "builder": "platform",  "out": "props/platform_candy.glb",    "colors": { "base": [0.95, 0.45, 0.65], "stripe": [1.0, 1.0, 1.0] } },
+    { "id": "block_brick",     "builder": "block",     "out": "props/block_brick.glb",       "colors": { "base": [0.85, 0.45, 0.25], "line": [0.55, 0.25, 0.12] } },
+    { "id": "block_question",  "builder": "block",     "out": "props/block_question.glb",    "colors": { "base": [0.98, 0.78, 0.15], "line": [0.65, 0.42, 0.05] }, "qmark": true },
+    { "id": "spring_pad",      "builder": "spring",    "out": "props/spring_pad.glb",        "colors": { "base": [0.9, 0.2, 0.25], "plate": [0.95, 0.85, 0.3] } },
+    { "id": "checkpoint_flag", "builder": "flag",      "out": "props/checkpoint_flag.glb",   "colors": { "pole": [0.85, 0.85, 0.9], "cloth": [0.95, 0.35, 0.4] } },
+    { "id": "goal_gate",       "builder": "gate",      "out": "props/goal_gate.glb",         "colors": { "frame": [0.75, 0.5, 1.0], "portal": [0.55, 0.9, 1.0] } },
+    { "id": "gem",             "builder": "gem",       "out": "pickups/gem.glb",             "colors": { "gem": [0.25, 0.85, 0.95] } },
+    { "id": "diamond",         "builder": "diamond",   "out": "pickups/diamond.glb",         "colors": { "gem": [0.85, 0.55, 1.0] } },
+    { "id": "walker",          "builder": "walker",    "out": "enemies/walker.glb",          "colors": { "body": [0.55, 0.3, 0.75], "foot": [0.35, 0.15, 0.55] } },
+    { "id": "hopper",          "builder": "hopper",    "out": "enemies/hopper.glb",          "colors": { "body": [0.95, 0.55, 0.2], "foot": [0.7, 0.3, 0.1] } },
+    { "id": "tree",            "builder": "tree",      "out": "scenery/tree.glb",            "colors": { "trunk": [0.5, 0.32, 0.18], "leaf": [0.3, 0.7, 0.3] } },
+    { "id": "tree_candy",      "builder": "tree",      "out": "scenery/tree_candy.glb",      "colors": { "trunk": [0.85, 0.75, 0.6], "leaf": [0.95, 0.45, 0.7] }, "swirl": true },
+    { "id": "cloud",           "builder": "cloud",     "out": "scenery/cloud.glb",           "colors": { "puff": [1.0, 1.0, 1.0] } },
+    { "id": "bush",            "builder": "bush",      "out": "scenery/bush.glb",            "colors": { "leaf": [0.32, 0.62, 0.28] } },
+    { "id": "bush_candy",      "builder": "bush",      "out": "scenery/bush_candy.glb",      "colors": { "leaf": [0.98, 0.6, 0.75] }, "dots": true },
+    { "id": "mia",             "builder": "character", "out": "characters/mia.glb",          "colors": { "hair": [0.95, 0.35, 0.5], "dress": [1.0, 0.85, 0.4], "skin": [0.98, 0.82, 0.7] }, "rig": true },
+    { "id": "lina",            "builder": "character", "out": "characters/lina.glb",         "colors": { "hair": [0.35, 0.55, 0.95], "dress": [0.5, 0.9, 0.75], "skin": [0.95, 0.78, 0.65] }, "rig": true }
+  ]
+}
