@@ -6,6 +6,9 @@ import { mkdirSync, writeFileSync, readdirSync } from "node:fs";
 
 const ROOT = `${import.meta.dir}/..`;
 const PORT = Number(Bun.argv.find((a) => a.startsWith("--port="))?.split("=")[1] ?? 8061);
+// --url=https://… verifies an externally hosted build (e.g. the public tunnel demo)
+// instead of spawning the local server
+const REMOTE = Bun.argv.find((a) => a.startsWith("--url="))?.split("=")[1];
 const FULL = Bun.argv.includes("--full");
 const SHOTS = `${ROOT}/build/shots`;
 mkdirSync(SHOTS, { recursive: true });
@@ -62,9 +65,9 @@ const check = (name: string, ok: boolean, extra = "") => {
 };
 
 // 1. serve
-const server = spawn("bun", ["scripts/serve-web.ts", "build/web", String(PORT)], { cwd: ROOT, stdio: "ignore" });
+const server = REMOTE ? null : spawn("bun", ["scripts/serve-web.ts", "build/web", String(PORT)], { cwd: ROOT, stdio: "ignore" });
 try {
-	for (let i = 0; i < 50; i++) {
+	if (!REMOTE) for (let i = 0; i < 50; i++) {
 		try { if ((await fetch(`http://127.0.0.1:${PORT}/index.html`)).ok) break; } catch {}
 		await sleep(100);
 	}
@@ -113,7 +116,7 @@ const consoleErrors: string[] = [];
 	const title = () => evaluate("document.title");
 
 	// 3. load + boot
-	await tab.send("Page.navigate", { url: `http://127.0.0.1:${PORT}/index.html?e2e=1` });
+	await tab.send("Page.navigate", { url: REMOTE ? `${REMOTE}/index.html` : `http://127.0.0.1:${PORT}/index.html?e2e=1` });
 	for (let i = 0; i < 120; i++) {
 		if (await evaluate("!!document.querySelector('canvas')")) break;
 		await sleep(250);
@@ -206,7 +209,7 @@ const consoleErrors: string[] = [];
 	check("0 page errors", pageErrors.length === 0, pageErrors.join(" | "));
 	chrome.kill("SIGTERM");
 } finally {
-	server.kill("SIGTERM");
+	server?.kill("SIGTERM");
 }
 console.log(failures === 0 ? "E2E OK" : `E2E FAILED (${failures})`);
 process.exit(failures === 0 ? 0 : 1);

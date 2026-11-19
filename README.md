@@ -35,7 +35,7 @@ bun scripts/ci.ts --stages=assets,import,check,unit,smoke,export,zip,e2e   # inc
 
 Individual stages: `bun run import|check|unit|export|zip|serve` (package.json) or
 `bun scripts/e2e.ts [--full]` (browser suite over raw CDP: boot, input, console/page errors,
-swiftshader fps, `--full` = alpha playthrough driven via the page-title state bridge).
+swiftshader fps, `--full` = alpha playthrough driven via the page-title state bridge, `--url=` = same suite against an externally hosted build, e.g. the public demo).
 
 ## Play
 
